@@ -10,8 +10,8 @@ In the Proxmox Virtual Environment web management interface, tag the
 Install Terraform:
 
 ```bash
-wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
-unzip terraform_1.5.7_linux_amd64.zip
+wget https://releases.hashicorp.com/terraform/1.6.4/terraform_1.6.4_linux_amd64.zip
+unzip terraform_1.6.4_linux_amd64.zip
 sudo install terraform /usr/local/bin
 rm terraform terraform_*_linux_amd64.zip
 ```
@@ -20,7 +20,7 @@ Set your proxmox details:
 
 ```bash
 # see https://registry.terraform.io/providers/bpg/proxmox/latest/docs#argument-reference
-# see https://github.com/bpg/terraform-provider-proxmox/blob/v0.33.0/proxmoxtf/provider/provider.go#L47-L53
+# see https://github.com/bpg/terraform-provider-proxmox/blob/v0.38.1/proxmoxtf/provider/provider.go#L47-L53
 cat >secrets-proxmox.sh <<EOF
 export PROXMOX_VE_INSECURE='1'
 export PROXMOX_VE_ENDPOINT='https://192.168.1.21:8006'
