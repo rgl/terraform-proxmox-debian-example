@@ -21,7 +21,7 @@ provider "proxmox" {
 
 variable "prefix" {
   type    = string
-  default = "terraform-example"
+  default = "example-terraform-debian"
 }
 
 # see https://registry.terraform.io/providers/bpg/proxmox/0.40.0/docs/data-sources/virtual_environment_vms
