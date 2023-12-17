@@ -1,22 +1,17 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.6.4"
+  required_version = "1.6.6"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/random
     random = {
       source  = "hashicorp/random"
-      version = "3.5.1"
-    }
-    # see https://registry.terraform.io/providers/hashicorp/template
-    template = {
-      source  = "hashicorp/template"
-      version = "2.2.0"
+      version = "3.6.0"
     }
     # see https://registry.terraform.io/providers/bpg/proxmox
     # see https://github.com/bpg/terraform-provider-proxmox
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.38.1"
+      version = "0.40.0"
     }
   }
 }
@@ -29,18 +24,18 @@ variable "prefix" {
   default = "terraform-example"
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.38.1/docs/data-sources/virtual_environment_vms
+# see https://registry.terraform.io/providers/bpg/proxmox/0.40.0/docs/data-sources/virtual_environment_vms
 data "proxmox_virtual_environment_vms" "debian_templates" {
   tags = ["debian-12", "template"]
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.38.1/docs/data-sources/virtual_environment_vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.40.0/docs/data-sources/virtual_environment_vm
 data "proxmox_virtual_environment_vm" "debian_template" {
   node_name = data.proxmox_virtual_environment_vms.debian_templates.vms[0].node_name
   vm_id     = data.proxmox_virtual_environment_vms.debian_templates.vms[0].vm_id
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.38.1/docs/resources/virtual_environment_vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.40.0/docs/resources/virtual_environment_vm
 resource "proxmox_virtual_environment_vm" "example" {
   name      = var.prefix
   node_name = "pve"
