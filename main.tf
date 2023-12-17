@@ -39,7 +39,7 @@ data "proxmox_virtual_environment_vm" "debian_template" {
 resource "proxmox_virtual_environment_vm" "example" {
   name      = var.prefix
   node_name = "pve"
-  tags      = ["debian-12", "example", "terraform"]
+  tags      = sort(["debian-12", "example", "terraform"])
   clone {
     vm_id = data.proxmox_virtual_environment_vm.debian_template.vm_id
     full  = false
