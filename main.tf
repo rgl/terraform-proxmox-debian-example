@@ -64,6 +64,7 @@ resource "proxmox_virtual_environment_vm" "example" {
   }
   agent {
     enabled = true
+    trim    = true
   }
   initialization {
     ip_config {
