@@ -62,6 +62,9 @@ resource "proxmox_virtual_environment_vm" "example" {
     discard     = "on"
     size        = 40
   }
+  tpm_state {
+    version = "v2.0"
+  }
   agent {
     enabled = true
     trim    = true
@@ -88,6 +91,13 @@ resource "proxmox_virtual_environment_vm" "example" {
       lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
       mount | grep ^/dev
       df -h
+      EOF
+      , <<-EOF
+      sudo apt-get update
+      sudo apt-get install -y tpm2-tools
+      sudo systemd-cryptenroll --tpm2-device=list
+      sudo tpm2 getekcertificate | openssl x509 -text -noout
+      sudo tpm2 pcrread
       EOF
     ]
     connection {
