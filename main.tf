@@ -62,6 +62,7 @@ data "proxmox_virtual_environment_vm" "debian_template" {
 # NB the output is saved at /var/log/cloud-init-output.log
 # see journactl -u cloud-init
 # see /run/cloud-init/*.log
+# see https://cloudinit.readthedocs.io/en/latest/topics/examples.html#disk-setup
 # see https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html#datasource-nocloud
 # see https://pve.proxmox.com/wiki/Cloud-Init_Support
 # see https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config
@@ -80,6 +81,19 @@ data "cloudinit_config" "example" {
         lock_passwd: false
         ssh-authorized-keys:
           - ${jsonencode(trimspace(file("~/.ssh/id_rsa.pub")))}
+    disk_setup:
+      /dev/sdb:
+        table_type: gpt
+        layout:
+          - [100, 83]
+        overwrite: false
+    fs_setup:
+      - label: data
+        device: /dev/sdb1
+        filesystem: ext4
+        overwrite: false
+    mounts:
+      - [/dev/sdb1, /data, ext4, 'defaults,discard,nofail', '0', '2']
     runcmd:
       - echo 'Hello from cloud-config runcmd!'
       - sed -i '/vagrant insecure public key/d' /home/vagrant/.ssh/authorized_keys
@@ -124,6 +138,14 @@ resource "proxmox_virtual_environment_vm" "example" {
     ssd         = true
     discard     = "on"
     size        = 40
+  }
+  disk {
+    interface   = "scsi1"
+    file_format = "raw"
+    iothread    = true
+    ssd         = true
+    discard     = "on"
+    size        = 60
   }
   tpm_state {
     version = "v2.0"
