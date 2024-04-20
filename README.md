@@ -39,6 +39,7 @@ Create the infrastructure:
 export CHECKPOINT_DISABLE='1'
 export TF_LOG='DEBUG' # TRACE, DEBUG, INFO, WARN or ERROR.
 export TF_LOG_PATH='terraform.log'
+rm -f "$TF_LOG_PATH"
 terraform init
 terraform plan -out=tfplan
 time terraform apply tfplan
