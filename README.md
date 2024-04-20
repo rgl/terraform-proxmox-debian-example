@@ -24,8 +24,9 @@ Set your proxmox details:
 cat >secrets-proxmox.sh <<EOF
 unset HTTPS_PROXY
 #export HTTPS_PROXY='http://localhost:8080'
+export TF_VAR_proxmox_pve_node_address='192.168.1.21'
 export PROXMOX_VE_INSECURE='1'
-export PROXMOX_VE_ENDPOINT='https://192.168.1.21:8006'
+export PROXMOX_VE_ENDPOINT="https://$TF_VAR_proxmox_pve_node_address:8006"
 export PROXMOX_VE_USERNAME='root@pam'
 export PROXMOX_VE_PASSWORD='vagrant'
 EOF
