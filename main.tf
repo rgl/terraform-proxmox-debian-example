@@ -79,7 +79,7 @@ data "cloudinit_config" "example" {
       - name: vagrant
         passwd: '$6$rounds=4096$NQ.EmIrGxn$rTvGsI3WIsix9TjWaDfKrt9tm3aa7SX7pzB.PSjbwtLbsplk1HsVzIrZbXwQNce6wmeJXhCq9YFJHDx9bXFHH.'
         lock_passwd: false
-        ssh-authorized-keys:
+        ssh_authorized_keys:
           - ${jsonencode(trimspace(file("~/.ssh/id_rsa.pub")))}
     disk_setup:
       /dev/sdb:
