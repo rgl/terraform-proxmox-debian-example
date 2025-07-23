@@ -1,23 +1,24 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.11.4"
+  required_version = "1.12.2"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/random
+    # see https://github.com/hashicorp/terraform-provider-random
     random = {
       source  = "hashicorp/random"
-      version = "3.7.1"
+      version = "3.7.2"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
     cloudinit = {
       source  = "hashicorp/cloudinit"
-      version = "2.3.6"
+      version = "2.3.7"
     }
     # see https://registry.terraform.io/providers/bpg/proxmox
     # see https://github.com/bpg/terraform-provider-proxmox
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.75.0"
+      version = "0.80.0"
     }
   }
 }
@@ -45,12 +46,12 @@ variable "proxmox_pve_node_address" {
   type = string
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.75.0/docs/data-sources/virtual_environment_vms
+# see https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/data-sources/virtual_environment_vms
 data "proxmox_virtual_environment_vms" "debian_templates" {
   tags = ["debian-12", "template"]
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.75.0/docs/data-sources/virtual_environment_vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/data-sources/virtual_environment_vm
 data "proxmox_virtual_environment_vm" "debian_template" {
   node_name = data.proxmox_virtual_environment_vms.debian_templates.vms[0].node_name
   vm_id     = data.proxmox_virtual_environment_vms.debian_templates.vms[0].vm_id
@@ -103,7 +104,7 @@ data "cloudinit_config" "example" {
   }
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.75.0/docs/resources/virtual_environment_file
+# see https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/resources/virtual_environment_file
 resource "proxmox_virtual_environment_file" "example_ci_user_data" {
   content_type = "snippets"
   datastore_id = "local"
@@ -114,7 +115,7 @@ resource "proxmox_virtual_environment_file" "example_ci_user_data" {
   }
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.75.0/docs/resources/virtual_environment_vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/resources/virtual_environment_vm
 resource "proxmox_virtual_environment_vm" "example" {
   name      = var.prefix
   node_name = "pve"
@@ -181,7 +182,7 @@ resource "proxmox_virtual_environment_vm" "example" {
       cat /etc/hosts
       sudo sfdisk -l
       lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
-      mount | grep ^/dev
+      mount | grep -E '^/dev/' | sort
       df -h
       EOF
       , <<-EOF
