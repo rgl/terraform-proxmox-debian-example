@@ -101,6 +101,11 @@ data "cloudinit_config" "example" {
         overwrite: false
     mounts:
       - [data, /data, ext4, 'defaults,discard,nofail', '0', '2']
+    bootcmd:
+      # disable IPv6 as a workaround for ensuring proxmox_virtual_environment_vm
+      # ipv4_addresses property has a value.
+      # see https://github.com/bpg/terraform-provider-proxmox/issues/2062
+      - sysctl -w net.ipv6.conf.all.disable_ipv6=1
     runcmd:
       - echo 'Hello from cloud-config runcmd!'
       - sed -i '/vagrant insecure public key/d' /home/vagrant/.ssh/authorized_keys
@@ -184,6 +189,7 @@ resource "proxmox_virtual_environment_vm" "example" {
       echo "machine-id is $(cat /etc/machine-id)"
       hostname --fqdn
       cat /etc/hosts
+      ip addr
       sudo sfdisk -l
       lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
       mount | grep -E '^/dev/' | sort
