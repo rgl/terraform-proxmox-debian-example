@@ -184,6 +184,7 @@ resource "proxmox_virtual_environment_vm" "example" {
       lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
       mount | grep -E '^/dev/' | sort
       df -h
+      sudo tune2fs -l "$(findmnt -n -o SOURCE /data)"
       EOF
       , <<-EOF
       sudo apt-get update
