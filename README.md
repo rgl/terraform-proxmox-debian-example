@@ -2,7 +2,7 @@
 
 [![Lint](https://github.com/rgl/terraform-proxmox-debian-example/actions/workflows/lint.yml/badge.svg)](https://github.com/rgl/terraform-proxmox-debian-example/actions/workflows/lint.yml)
 
-Create and install the [base Debian 12 vagrant template](https://github.com/rgl/debian-vagrant).
+Create and install the [base Debian 13 vagrant template](https://github.com/rgl/debian-vagrant).
 
 Install Terraform:
 

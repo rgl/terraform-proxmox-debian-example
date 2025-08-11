@@ -48,7 +48,7 @@ variable "proxmox_pve_node_address" {
 
 # see https://registry.terraform.io/providers/bpg/proxmox/0.81.0/docs/data-sources/virtual_environment_vms
 data "proxmox_virtual_environment_vms" "debian_templates" {
-  tags = ["debian-12", "template"]
+  tags = ["debian-13", "template"]
 }
 
 # see https://registry.terraform.io/providers/bpg/proxmox/0.81.0/docs/data-sources/virtual_environment_vm
@@ -128,7 +128,7 @@ resource "proxmox_virtual_environment_file" "example_ci_user_data" {
 resource "proxmox_virtual_environment_vm" "example" {
   name      = var.prefix
   node_name = "pve"
-  tags      = sort(["debian-12", "example", "terraform"])
+  tags      = sort(["debian-13", "example", "terraform"])
   clone {
     vm_id = data.proxmox_virtual_environment_vm.debian_template.vm_id
     full  = false
@@ -198,7 +198,7 @@ resource "proxmox_virtual_environment_vm" "example" {
       EOF
       , <<-EOF
       sudo apt-get update
-      sudo apt-get install -y tpm2-tools
+      sudo apt-get install -y systemd-cryptsetup tpm2-tools
       sudo journalctl -k --grep=tpm --no-pager
       sudo systemd-cryptenroll --tpm2-device=list
       sudo tpm2 getekcertificate | openssl x509 -text -noout
