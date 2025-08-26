@@ -61,7 +61,7 @@ data "proxmox_virtual_environment_vm" "debian_template" {
 # NB cloud-init executes **all** these parts regardless of their result. they
 #    should be idempotent.
 # NB the output is saved at /var/log/cloud-init-output.log
-# see journactl -u cloud-init
+# see journalctl -u cloud-init
 # see /run/cloud-init/*.log
 # see https://cloudinit.readthedocs.io/en/latest/topics/examples.html#disk-setup
 # see https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html#datasource-nocloud
