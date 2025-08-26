@@ -9,13 +9,13 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           # renovate: datasource=github-releases depName=hashicorp/terraform
-          terraform_version: "1.12.2"
+          terraform_version: "1.13.0"
       - name: Cache the plugins directory
         uses: actions/cache@v4
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v5
         name: Setup
         with:
           # see https://github.com/terraform-linters/tflint/releases
@@ -36,6 +36,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           # renovate: datasource=github-releases depName=hashicorp/terraform
-          terraform_version: "1.12.2"
+          terraform_version: "1.13.0"
       - name: terraform fmt check
         run: terraform fmt -check -diff
