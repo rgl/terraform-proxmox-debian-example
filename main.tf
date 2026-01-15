@@ -126,9 +126,10 @@ resource "proxmox_virtual_environment_file" "example_ci_user_data" {
 
 # see https://registry.terraform.io/providers/bpg/proxmox/0.93.0/docs/resources/virtual_environment_vm
 resource "proxmox_virtual_environment_vm" "example" {
-  name      = var.prefix
-  node_name = "pve"
-  tags      = sort(["debian-13", "example", "terraform"])
+  name        = var.prefix
+  description = "created from ${path.cwd}"
+  node_name   = "pve"
+  tags        = sort(["debian-13", "example", "terraform"])
   clone {
     vm_id = data.proxmox_virtual_environment_vm.debian_template.vm_id
     full  = false
