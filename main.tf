@@ -1,30 +1,31 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.15.2"
+  required_version = "1.15.8"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/random
     # see https://github.com/hashicorp/terraform-provider-random
     random = {
       source  = "hashicorp/random"
-      version = "3.8.1"
+      version = "3.9.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
     cloudinit = {
       source  = "hashicorp/cloudinit"
-      version = "2.3.7"
+      version = "2.4.0"
     }
     # see https://registry.terraform.io/providers/bpg/proxmox
     # see https://github.com/bpg/terraform-provider-proxmox
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.106.0"
+      version = "0.111.1"
     }
   }
 }
 
 provider "proxmox" {
   ssh {
+    username = var.proxmox_pve_node_username
     node {
       name    = var.proxmox_pve_node_name
       address = var.proxmox_pve_node_address
@@ -37,6 +38,11 @@ variable "prefix" {
   default = "example-terraform-debian"
 }
 
+variable "proxmox_pve_node_username" {
+  type    = string
+  default = "vagrant"
+}
+
 variable "proxmox_pve_node_name" {
   type    = string
   default = "pve"
@@ -46,12 +52,12 @@ variable "proxmox_pve_node_address" {
   type = string
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.106.0/docs/data-sources/virtual_environment_vms
+# see https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/data-sources/virtual_environment_vms
 data "proxmox_virtual_environment_vms" "debian_templates" {
-  tags = ["debian-13", "template"]
+  tags = ["debian-13-uefi", "template"]
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.106.0/docs/data-sources/vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/data-sources/vm
 data "proxmox_vm" "debian_template" {
   node_name = data.proxmox_virtual_environment_vms.debian_templates.vms[0].node_name
   id        = data.proxmox_virtual_environment_vms.debian_templates.vms[0].vm_id
@@ -115,7 +121,7 @@ data "cloudinit_config" "example" {
   }
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.106.0/docs/resources/virtual_environment_file
+# see https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/resources/virtual_environment_file
 resource "proxmox_virtual_environment_file" "example_ci_user_data" {
   content_type = "snippets"
   datastore_id = "local"
@@ -126,12 +132,12 @@ resource "proxmox_virtual_environment_file" "example_ci_user_data" {
   }
 }
 
-# see https://registry.terraform.io/providers/bpg/proxmox/0.106.0/docs/resources/virtual_environment_vm
+# see https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/resources/virtual_environment_vm
 resource "proxmox_virtual_environment_vm" "example" {
   name        = var.prefix
   description = "created from ${path.cwd}"
   node_name   = "pve"
-  tags        = sort(["debian-13", "example", "terraform"])
+  tags        = sort(["debian-13-uefi", "example", "terraform"])
   clone {
     vm_id = data.proxmox_vm.debian_template.id
     full  = false
