@@ -20,7 +20,7 @@ Set your proxmox details:
 
 ```bash
 # see https://registry.terraform.io/providers/bpg/proxmox/latest/docs#argument-reference
-# see https://github.com/bpg/terraform-provider-proxmox/blob/v0.122.0/proxmoxtf/provider/provider.go#L52-L61
+# see https://github.com/bpg/terraform-provider-proxmox/blob/v0.123.1/proxmoxtf/provider/provider.go#L52-L61
 # NB this expects that the proxmox_pve_node_username user has passwordless ssh key authentication and sudo.
 cat >secrets-proxmox.sh <<EOF
 unset HTTPS_PROXY
